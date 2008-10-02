@@ -11,17 +11,17 @@ head :- body(foo,Foo,foo(foo)).
 head(booh,X,foo(booh,X)) :- body.
 head(booh,X,foo(booh,X)) :- body(foo,Foo,foo(foo)).
 
-head --> body.
+head --> body >>.
 head --> body(foo,Foo,foo(foo)).
 
 head(booh,X,foo(booh,X)) --> body.
-head(booh,X,foo(booh,X)) --> body(foo,Foo,foo(foo)).
+head(booh,X,foo(booh,X)) --> foo,
+	body(foo,Foo,foo(foo)), {foo(bar)}.
 
-dynamic(foo/2).
+dynamic foo/2.
 
 foobar.
-foobar .
-foobar :- !.
+foobar :- !, \+ , >>.
 
 head :- foo(C), foo(B),
 	/* something commentary */

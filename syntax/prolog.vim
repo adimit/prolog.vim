@@ -33,7 +33,7 @@ syntax keyword prologSWIBuiltIn   rational callable ground cyclic_term subsumes 
 			\unifiable use_module compare apply not ignore call_with_depth_limit call_cleanup 
 			\print_message print_message_lines message_hook on_signal current_signal block exit 
 			\term_hash redefine_system_predicate retractall assert recorda recordz recorded 
-			\erase flag dynamic multifile compile_predicates discontiguous index current_atom 
+			\erase flag compile_predicates index current_atom 
 			\current_blob current_functor current_flag current_key dwim_predicate nth_clause 
 			\predicate_property open_null_stream current_stream is_stream stream_position_data 
 			\seek set_stream see tell append seeing telling seen set_prolog_IO told 
@@ -61,31 +61,37 @@ syntax keyword prologSWIBuiltIn   rational callable ground cyclic_term subsumes 
 			\setup_and_call_cleanup message_to_string phrase hash with_output_to fileerrors 
 			\read_pending_input prompt1 same_term sub_string merge_set 
 
-
 syntax cluster prologBuiltIn      contains=prologSWIBuiltIn,prologISOBuiltIn
 
-
-syntax match   prologISOSymbols   /!\|\\\?==\|@=\?<\|@>=\?\|\\\?=\||\|\*\?->\|=\.\.\|=\?<\|>=\?\|=\\=\|=\:=\|\*\|-\|+\|\/\|\/\/\|>>\|\/\\\|\\\/\|\\\|\*\*\|\\+/ 
+syntax match   prologArithmetic   /\*\*\?\|+\|\/\/\?\|\/\\\|<<\|>>\|\\\/\?\|\^/ 
 			\contained containedin=prologBody
-syntax match   prologSWISymbols   /\\\?=@=\|\^\|?=/ contained containedin=prologBody 
-syntax cluster prologSymbols      contains=prologISOSymbols,prologSWISymbols
+
+syntax match   prologRelations    /=\.\.\|!\|=:=\|=\?<\|=@=\|=\\=\|>=\?\|@=\?<\|@>=\?\|\\+\|\\\?=\?=\|\\\?=@=\|=/ 
+			\contained containedin=prologBody
+
 
 syntax region  prologCComment     fold start=/\/\*/ end=/\*\// contains=prologTODO,@Spell
 syntax match   prologComment      /%.*/ contains=prologTODO,@Spell
 syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XXX xxx contained
 syntax cluster prologComments     contains=prologCComment,prologComment
 
-syntax region  prologQuery        fold start=/?-\zs/ end=/\./ 
-			\contains=@prologComments,prologList,@prologTerms
-syntax region  prologBody         fold start=/:-\zs/ end=/\./ 
+syntax region  prologBody         fold start=/\(:-\|?-\)\zs/ end=/\./ 
 			\contains=@prologComments,prologList,prlogBodyPunctuation,@prologTerms 
 syntax region  prologDCGBody      fold start=/-->\zs/ end=/\./ 
-			\contains=@prologComments,prologList,prlogBodyPunctuation,prologDCGSpecials,@prologTerms
+			\contains=@prologComments,prologList,prologDCGSpecials,@prologTerms,prologRelations
 
+syntax match   prologNumber       /\<\d\+\>/ contained
 syntax match   prologAtom         /\<\l\w*\>/ contained
 syntax match   prologVariable     /\<\u\w*\>/ contained
 
+syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
+			\prologPredicate,prologNumber
+
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
+
+syntax region  prologOpStatement  start=/module\|discontiguous\|dynamic\|module_transparent\|multifile\|volatile\|initialization/ end=/\./ 
+			\contains=@prologPredicates
+
 
 syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologHeadPunctuation contains=@prologBuiltIn,@prologTerms
 
@@ -95,11 +101,11 @@ syntax region  prologDCGSpecials  start=/{/ end=/}/ contained contains=@prologTe
 syntax region  prologPredicate    start=/\<\l\w*\>(/ end=/)/ contains=prologPredicate,@prologTerms
 syntax match   prologPredicateWithArity /\<\l\w*\>\/\d\+/ contains=@prologBuiltIn,prologArity
 syntax match   prologArity        contained /\/\d\+/
+syntax cluster prologPredicates   contains=prologPredicate,prologPredicateWithArity
 
 syntax region  prologList         start=/\[/ end=/\]/ contains=@prologListDelimiters,@prologTerms contained
 syntax match   prologListDelimiters /,/ contained
 
-syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,prologPredicate
 
 syntax match   prologQuotedFormat /\~\(\d*[acd\~DeEgfGiknNpqrR@st\|+wW]\|`.t\)/ contained
 syntax region  prologQuoted       start=/'/ end=/'/ contains=prologQuotedFormat,@Spell
@@ -110,18 +116,19 @@ syntax match   prologErrorVariable /\<\u\w*\>/
 
 highlight link prologErrorVariable Error
 
+highlight link prologOpStatement  Preproc
 highlight link prologComment      Comment
 highlight link prologCComment     Comment
 highlight link prologTODO         TODO
 
 highlight link prologAtom         Constant
 highlight link prologVariable     Identifier
+highlight link prologNumber       Number
 
 highlight link prologISOBuiltIn   Keyword
 highlight link prologSWIBuiltIn   Keyword
 
-highlight link prologISOSymbols   Statement
-highlight link prologSWISymbols   Statement
+highlight link prologRelations    Statement
 
 highlight link prologQuotedFormat Special
 highlight link prologQuoted       String

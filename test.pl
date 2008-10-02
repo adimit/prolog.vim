@@ -2,6 +2,9 @@
 
 head :- body.
 
+module  foobar().
+dynamic foobar/2.
+
 :- statement.
 :- statement(x,y,X,Y,foo(x,Y)).
 ?- query.
@@ -23,10 +26,13 @@ dynamic foo/2.
 
 foobar.
 
-foobar :- !, \+ ,  >>.
+foobar :- !, \+ ,  =@= =:= << >>.
 
 head :- foo(C), foo(B),
-	/* something commentary */
+	/* something commentary 
+	*
+	* */
+
 	% more comments
 	\+ foo(G).
  
@@ -38,7 +44,7 @@ head :- Error(foo). /*predicates must start lower-case*/
 
 head :- error(1) error(2). /*no comma and a TODO*/
 
-head :- body, Ts =.. [Foo|Bar].
+head :- body, Ts =:= =.. [Foo|Bar].
 
 head :- list([a,b,C,foo:Bar|Tail],Foo).
 head :- dlist(H-Ts).

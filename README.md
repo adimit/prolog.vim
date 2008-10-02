@@ -7,3 +7,10 @@ These files seek to change this. Copy them into your `$VIM_RUNTIME` or just `~/.
 Note that this is not ready for use. I'll have it done till tomorrow :-)
 
 The files are public domain so far.
+
+## Feature Highlights
+
+- Accounts for pretty much all of Prolog syntax (including DCGs)
+- Syntactical hints for folding
+- Accounts for the full set of ISO built-in predicates and operators
+- Also features the full set of SWI built-ins.

@@ -5,3 +5,5 @@ Prolog is lacking any sort of functional IDE, besides maybe the Emacs-integratio
 These files seek to change this. Copy them into your `$VIM_RUNTIME` or just `~/.vim`, preserving the directory structure.
 
 Note that this is very alpha still.
+
+The files are public domain so far.

@@ -64,37 +64,39 @@ syntax keyword prologSWIBuiltIn   rational callable ground cyclic_term subsumes 
 
 syntax cluster prologBuiltIn      contains=prologSWIBuiltIn,prologISOBuiltIn
 
+
+syntax match   prologISOSymbols   /!\|\\\?==\|@=\?<\|@>=\?\|\\\?=\||\|\*\?->\|=\.\.\|=\?<\|>=\?\|=\\=\|=\:=\|\*\|-\|+\|\/\|\/\/\|>>\|\/\\\|\\\/\|\\\|\*\*\|\\+/ 
+			\contained containedin=prologBody
+syntax match   prologSWISymbols   /\\\?=@=\|\^\|?=/ contained containedin=prologBody 
+syntax cluster prologSymbols      contains=prologISOSymbols,prologSWISymbols
+
 syntax region  prologCComment     fold start=/\/\*/ end=/\*\// contains=prologTODO,@Spell
 syntax match   prologComment      /%.*/ contains=prologTODO,@Spell
 syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XXX xxx contained
 syntax cluster prologComments     contains=prologCComment,prologComment
 
-syntax match   prologHeadPunctuation /-->\|:-\|\./ nextgroup=prologBlock
-syntax match   prologBodyPunctuation /,\|\./
-
-syntax match   prologISOSymbols   /!\|\\\?==\|@=\?<\|@>=\?\|\\\?=\||\|\*\?->\|=\.\.\|=\?<\|>=\?\|=\\=\|=\:=\|\*\|-\|+\|\/\|\/\/\|>>\|\/\\\|\\\/\|\\\|\*\*\|\\+\|/ 
-			\contained containedin=prologBlock transparent
-syntax match   prologSWISymbols   /\\\?=@=\|\^\|?=/ contained containedin=prologBlock 
-syntax cluster prologSymbols      contains=prologISOSymbols,prologSWISymbols
+syntax region  prologQuery        fold start=/?-\zs/ end=/\./ 
+			\contains=@prologComments,prologList,@prologTerms
+syntax region  prologBody         fold start=/:-\zs/ end=/\./ 
+			\contains=@prologComments,prologList,prlogBodyPunctuation,@prologTerms 
+syntax region  prologDCGBody      fold start=/-->\zs/ end=/\./ 
+			\contains=@prologComments,prologList,prlogBodyPunctuation,prologDCGSpecials,@prologTerms
 
 syntax match   prologAtom         /\<\l\w*\>/ contained
 syntax match   prologVariable     /\<\u\w*\>/ contained
 
-syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologHeadPunctuation contains=@prologBuiltIn
+syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
+
 syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologHeadPunctuation contains=@prologBuiltIn,@prologTerms
 
 syntax region  prologDCGSpecials  start=/{/ end=/}/ contained contains=@prologTerms
 
-syntax region  prologBlock        fold start=/\ze:-/ms=e end=/\./me=s 
-			\contains=@prologComments,prologList,prlogBodyPunctuation,@prologTerms
-syntax region  prologDCGBlock     fold start=/\ze-->/ms=e end=/\./me=s 
-			\contains=@prologComments,prologList,prlogBodyPunctuation,prologDCGSpecials,@prologTerms
 
 syntax region  prologPredicate    start=/\<\l\w*\>(/ end=/)/ contains=prologPredicate,@prologTerms
 syntax match   prologPredicateWithArity /\<\l\w*\>\/\d\+/ contains=@prologBuiltIn,prologArity
 syntax match   prologArity        contained /\/\d\+/
 
-syntax region  prologList         start=/\[/ end=/\]/ contains=@prologListDelimiters,@prologTerms
+syntax region  prologList         start=/\[/ end=/\]/ contains=@prologListDelimiters,@prologTerms contained
 syntax match   prologListDelimiters /,/ contained
 
 syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,prologPredicate
@@ -102,8 +104,11 @@ syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
 syntax match   prologQuotedFormat /\~\(\d*[acd\~DeEgfGiknNpqrR@st\|+wW]\|`.t\)/ contained
 syntax region  prologQuoted       start=/'/ end=/'/ contains=prologQuotedFormat,@Spell
 
+syntax match   prologErrorVariable /\<\u\w*\>/
 
 """" Highlights
+
+highlight link prologErrorVariable Error
 
 highlight link prologComment      Comment
 highlight link prologCComment     Comment
@@ -114,6 +119,9 @@ highlight link prologVariable     Identifier
 
 highlight link prologISOBuiltIn   Keyword
 highlight link prologSWIBuiltIn   Keyword
+
+highlight link prologISOSymbols   Statement
+highlight link prologSWISymbols   Statement
 
 highlight link prologQuotedFormat Special
 highlight link prologQuoted       String
@@ -126,9 +134,6 @@ highlight link prologHeadWithArgs Statement
 highlight link prologList         Type
 highlight link prologArity        Type
 highlight link prologDCGSpecials  Type
-
-highlight link prologISOSymbols   Statement
-highlight link prologSWISymbols   Statement
 
 highlight link prologBodyPunctuation Special
 

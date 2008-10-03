@@ -69,52 +69,51 @@ syntax match   prologArithmetic   /\*\*\?\|+\|\/\/\?\|\/\\\|<<\|>>\|\\\/\?\|\^/
 syntax match   prologRelations    /=\.\.\|!\|=:=\|=\?<\|=@=\|=\\=\|>=\?\|@=\?<\|@>=\?\|\\+\|\\\?=\?=\|\\\?=@=\|=/ 
 			\contained containedin=prologBody
 
-
 syntax region  prologCComment     fold start=/\/\*/ end=/\*\// contains=prologTODO,@Spell
 syntax match   prologComment      /%.*/ contains=prologTODO,@Spell
 syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XXX xxx contained
 syntax cluster prologComments     contains=prologCComment,prologComment
 
 syntax region  prologBody         fold start=/\(:-\|?-\)/ end=/\./ 
-			\contains=@prologComments,prologList,prlogBodyPunctuation,@prologTerms 
+			\contains=@prologAll
 syntax region  prologDCGBody      fold start=/-->/ end=/\./ 
-			\contains=@prologComments,prologList,prologDCGSpecials,@prologTerms,prologRelations
+			\contains=@prologAll,prologDCGSpecials
 
 syntax match   prologNumber       /\<\d\+\>/ contained
 syntax match   prologAtom         /\<\l\w*\>/ contained
 syntax match   prologVariable     /\<\u\w*\>/ contained
 
-syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
-			\prologPredicate,prologNumber
-
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
+syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologBuiltIn,@prologTerms
 
 syntax region  prologOpStatement  start=/module\|discontiguous\|dynamic\|module_transparent\|multifile\|volatile\|initialization/ end=/\./ 
 			\contains=@prologPredicates
 
+syntax region  prologDCGSpecials  start=/{/ end=/}/ contained contains=@prologAll
 
-syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologHeadPunctuation contains=@prologBuiltIn,@prologTerms
-
-syntax region  prologDCGSpecials  start=/{/ end=/}/ contained contains=@prologTerms
-
-
-syntax region  prologPredicate    start=/\<\l\w*\>(/ end=/)/ contains=prologPredicate,@prologTerms
+syntax region  prologTuple        fold start=/\W\zs(/ end=/)/ contained containedin=prologPredicate,prologBody contains=@prologAll
+syntax region  prologPredicate    start=/\<\l\w*\>\ze(/ end=/)/ contains=@prologAll
 syntax match   prologPredicateWithArity /\<\l\w*\>\/\d\+/ contains=@prologBuiltIn,prologArity
 syntax match   prologArity        contained /\/\d\+/
 syntax cluster prologPredicates   contains=prologPredicate,prologPredicateWithArity
 
-syntax region  prologList         start=/\[/ end=/\]/ contains=@prologListDelimiters,@prologTerms contained
-syntax match   prologListDelimiters /,/ contained
+syntax region  prologList         start=/\[/ end=/\]/ contains=prologListDelimiters,@prologAll,prologPredicateWithArity contained
+syntax match   prologListDelimiters /[,|]/ contained
 
+syntax cluster prologAll          contains=prologList,prologPredicate,prologTuple,@prologTerms,@prologComments,prologQuoted,@prologBuiltIn,prologRelations,prologArithmetic
+syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
+			\prologNumber,prologErrorTerm
 
 syntax match   prologQuotedFormat /\~\(\d*[acd\~DeEgfGiknNpqrR@st\|+wW]\|`.t\)/ contained
 syntax region  prologQuoted       start=/'/ end=/'/ contains=prologQuotedFormat,@Spell
 
 syntax match   prologErrorVariable /\<\u\w*\>/
+syntax region  prologErrorTerm    start=/\<\u\w*\>(/ end=/)/
 
 """" Highlights
 
 highlight link prologErrorVariable Error
+highlight link prologErrorTerm     Error
 
 highlight link prologOpStatement  Preproc
 highlight link prologComment      Comment
@@ -144,6 +143,7 @@ highlight link prologDCGBody      Statement
 highlight link prologList         Type
 highlight link prologArity        Type
 highlight link prologDCGSpecials  Type
+highlight link prologTuple        Type
 
 highlight link prologBodyPunctuation Special
 

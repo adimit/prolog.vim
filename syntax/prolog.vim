@@ -75,7 +75,7 @@ syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XX
 syntax cluster prologComments     contains=prologCComment,prologComment
 
 syntax region  prologBody         fold start=/\(:-\|?-\)/ end=/\./ 
-			\contains=@prologAll
+			\contains=@prologAll,prologPredicateWithArity
 syntax region  prologDCGBody      fold start=/-->/ end=/\./ 
 			\contains=@prologAll,prologDCGSpecials
 
@@ -86,8 +86,8 @@ syntax match   prologVariable     /\<\u\w*\>/ contained
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
 syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologBuiltIn,@prologTerms
 
-syntax region  prologOpStatement  start=/module\|discontiguous\|dynamic\|module_transparent\|multifile\|volatile\|initialization/ end=/\./ 
-			\contains=@prologPredicates
+syntax match  prologOpStatement   /indexed\|discontiguous\|dynamic\|module_transparent\|multifile\|volatile\|initialization/ 
+			\containedin=prologBody contained
 
 syntax region  prologDCGSpecials  start=/{/ end=/}/ contained contains=@prologAll
 
@@ -144,8 +144,6 @@ highlight link prologList         Type
 highlight link prologArity        Type
 highlight link prologDCGSpecials  Type
 highlight link prologTuple        Type
-
-highlight link prologBodyPunctuation Special
 
 syn sync minlines=20 maxlines=50
 

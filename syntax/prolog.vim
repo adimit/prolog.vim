@@ -8,6 +8,9 @@
 "              http://www.sics.se/sicstus/docs/3.7.1/html/sicstus_45.html
 "              but also features some SWI-specific enhancements.
 "              The BNF cannot be followed strictly, but I tried to do my best.
+"
+" TODO:        - Difference Lists
+"              - Constraint logic programming
 
 if version < 600
    syn clear
@@ -80,7 +83,7 @@ syntax region  prologDCGBody      fold start=/-->/ end=/\./
 			\contains=@prologAll,prologDCGSpecials
 
 syntax match   prologNumber       /\<\d\+\>/ contained
-syntax match   prologAtom         /\<\l\w*\>/ contained
+syntax match   prologAtom         /\<\l\w*\>\ze\([^(]\|$\)/ contained
 syntax match   prologVariable     /\<\u\w*\>/ contained
 
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
@@ -100,7 +103,7 @@ syntax cluster prologPredicates   contains=prologPredicate,prologPredicateWithAr
 syntax region  prologList         start=/\[/ end=/\]/ contains=prologListDelimiters,@prologAll,prologPredicateWithArity contained
 syntax match   prologListDelimiters /[,|]/ contained
 
-syntax cluster prologAll          contains=prologList,prologPredicate,prologTuple,@prologTerms,@prologComments,prologQuoted,@prologBuiltIn,prologRelations,prologArithmetic
+syntax cluster prologAll          contains=prologList,prologPredicate,prologTuple,@prologTerms,@prologComments,prologQuoted,@prologBuiltIn,prologRelations,prologArithmetic,prologDiffList
 syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
 			\prologNumber,prologErrorTerm
 
@@ -141,10 +144,10 @@ highlight link prologBody         Statement
 highlight link prologDCGBody      Statement
 
 highlight link prologList         Type
-highlight link prologListDelimiters Type
 highlight link prologArity        Type
 highlight link prologDCGSpecials  Type
 highlight link prologTuple        Type
+highlight link prologDiffList     Type
 
 syn sync minlines=20 maxlines=50
 

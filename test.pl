@@ -42,7 +42,20 @@ head :- foo(C), foo(B),
 
 head :- Error(foo). /*predicates must start lower-case*/
 
-head :- error(1) error(2). /*no comma and a TODO*/
+head :- (error(1); aoeuoe
+;  aoeu
+	oouaoeu
+;
+	aoeuaoe
+	/*
+	* aoeuaoe
+	*/
+;
+	aoeu
+% aoeuae
+% aoeu
+)error(2). /*no comma and a TODO*/
+
 
 head :- body, Ts =:= =.. [Foo|Bar].
 

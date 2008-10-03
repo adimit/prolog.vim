@@ -75,9 +75,9 @@ syntax match   prologComment      /%.*/ contains=prologTODO,@Spell
 syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XXX xxx contained
 syntax cluster prologComments     contains=prologCComment,prologComment
 
-syntax region  prologBody         fold start=/\(:-\|?-\)\zs/ end=/\./ 
+syntax region  prologBody         fold start=/\(:-\|?-\)/ end=/\./ 
 			\contains=@prologComments,prologList,prlogBodyPunctuation,@prologTerms 
-syntax region  prologDCGBody      fold start=/-->\zs/ end=/\./ 
+syntax region  prologDCGBody      fold start=/-->/ end=/\./ 
 			\contains=@prologComments,prologList,prologDCGSpecials,@prologTerms,prologRelations
 
 syntax match   prologNumber       /\<\d\+\>/ contained
@@ -137,6 +137,9 @@ highlight link prologPredicate    Statement
 highlight link prologPredicateWithArity Statement
 highlight link prologHead         Statement
 highlight link prologHeadWithArgs Statement
+
+highlight link prologBody         Statement
+highlight link prologDCGBody      Statement
 
 highlight link prologList         Type
 highlight link prologArity        Type

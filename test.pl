@@ -1,9 +1,11 @@
 % A small Prolog file to test prolog.vim
+%
+%
 
 head :- body.
 
-module  foobar().
-dynamic foobar/2.
+:- use_module  foobar(faoeu[aoeu]).
+:- dynamic foobar/2.
 
 :- statement.
 :- statement(x,y,X,Y,foo(x,Y)).
@@ -12,7 +14,7 @@ dynamic foobar/2.
 
 head :- body(foo,Foo,foo(foo)).
 
-head(booh,X,foo(booh,X)) :- body.
+head((foobar,baz)booh,X,foo(booh,X)) :- body.
 head(booh,X,foo(booh,X)) :- body(foo,Foo,foo(foo)).
 
 head --> body >>.
@@ -22,7 +24,7 @@ head(booh,X,foo(booh,X)) --> body.
 head(booh,X,foo(booh,X)) --> foo,
 	body(foo,Foo,foo(foo)), {foo(bar)}.
 
-dynamic foo/2.
+:- dynamic foo/2.
 
 foobar.
 
@@ -42,6 +44,11 @@ head :- foo(C), foo(B),
 
 head :- Error(foo). /*predicates must start lower-case*/
 
+interpret((Index,Old),New,World) :-
+	foobar (
+; uaoeu
+).
+
 head :- (error(1); aoeuoe
 ;  aoeu
 	oouaoeu
@@ -56,11 +63,12 @@ head :- (error(1); aoeuoe
 % aoeu
 )error(2). /*no comma and a TODO*/
 
+Error
 
 head :- body, Ts =:= =.. [Foo|Bar].
 
 head :- list([a,b,C,foo:Bar|Tail],Foo).
-head :- dlist(H-Ts).
+head :- dlist(Huuu-Ts).
 
 head :- foobar('string').
 head :- format('fooo ~n bar').

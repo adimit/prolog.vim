@@ -84,7 +84,7 @@ syntax match   prologAtom         /\<\l\w*\>/ contained
 syntax match   prologVariable     /\<\u\w*\>/ contained
 
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
-syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologBuiltIn,@prologTerms
+syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologAll
 
 syntax match  prologOpStatement   /indexed\|discontiguous\|dynamic\|module_transparent\|multifile\|volatile\|initialization/ 
 			\containedin=prologBody contained

@@ -84,7 +84,7 @@ syntax region  prologDCGBody      fold start=/-->/ end=/\./
 
 syntax match   prologNumber       /\<\d\+\>/ contained
 syntax match   prologAtom         /\<\l\w*\>\ze\([^(]\|$\)/ contained
-syntax match   prologVariable     /\<\u\w*\>/ contained
+syntax match   prologVariable     /\<\(_\|\u\)\w*\>/ contained
 
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
 syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologAll
@@ -110,8 +110,8 @@ syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
 syntax match   prologQuotedFormat /\~\(\d*[acd\~DeEgfGiknNpqrR@st\|+wW]\|`.t\)/ contained
 syntax region  prologQuoted       start=/'/ end=/'/ contains=prologQuotedFormat,@Spell
 
-syntax match   prologErrorVariable /\<\u\w*\>/
-syntax region  prologErrorTerm    start=/\<\u\w*\>(/ end=/)/
+syntax match   prologErrorVariable /\<\(_\|\u\)\w*\>/
+syntax region  prologErrorTerm    start=/\<\(_\|\u\)\w*\>(/ end=/)/
 
 """" Highlights
 

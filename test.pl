@@ -8,14 +8,14 @@ head :- body.
 :- dynamic foobar/2.
 
 :- statement.
-:- statement(x,y,X,Y,foo(x,Y)).
+:- statement(x,y,_X,Y,foo(x,Y)).
 ?- query.
-?- query(x,y,X,Y,foo(x,Y)).
+?- query(x,y,_X,Y,foo(x,Y)).
 
-head :- body(foo,Foo,foo(foo)).
+head(_) :- body(foo,Foo,foo(foo),_foo).
 
 head((foobar,baz)booh,X,foo(booh,X)) :- body.
-head(booh,X,foo(booh,X)) :- body(foo,Foo,foo(foo)).
+head(booh,X,foo(booh,X)) :- body(foo,Foo,foo(foo),_foo).
 
 head --> body >>.
 head --> body(foo,Foo,foo(foo)).
@@ -42,7 +42,7 @@ head :- foo(C), foo(B),
 * comment
 */
 
-head :- Error(foo). /*predicates must start lower-case*/
+head :- Error(foo), _error(bar). /*predicates must start lower-case*/
 
 interpret((Index,Old),New,World) :-
 	foobar (
@@ -64,6 +64,7 @@ head :- (error(1); aoeuoe
 )error(2). /*no comma and a TODO*/
 
 Error
+_error
 
 head :- body, Ts =:= =.. [Foo|Bar].
 

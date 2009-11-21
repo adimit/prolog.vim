@@ -135,10 +135,10 @@ highlight link prologRelations    Statement
 highlight link prologQuotedFormat Special
 highlight link prologQuoted       String
 
-highlight link prologPredicate    Statement
-highlight link prologPredicateWithArity Statement
-highlight link prologHead         Statement
-highlight link prologHeadWithArgs Statement
+highlight link prologPredicate    Normal
+highlight link prologPredicateWithArity Normal
+highlight link prologHead         Constant
+highlight link prologHeadWithArgs Normal
 
 highlight link prologBody         Statement
 highlight link prologDCGBody      Statement

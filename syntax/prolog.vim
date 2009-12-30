@@ -83,6 +83,7 @@ syntax region  prologDCGBody      fold start=/-->/ end=/\./
 			\contains=@prologAll,prologDCGSpecials
 
 syntax match   prologNumber       /\<\d\+\>/ contained
+syntax match   prologNumber       /\<\d\+\.\d\+\>/ contained
 syntax match   prologAtom         /\<\l\w*\>\ze\([^(]\|$\)/ contained
 syntax match   prologVariable     /\<\(_\|\u\)\w*\>/ contained
 

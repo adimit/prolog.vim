@@ -73,3 +73,6 @@ head :- dlist(Huuu-Ts).
 
 head :- foobar('string').
 head :- format('fooo ~n bar').
+
+% numbers
+head :- X is 2 + 3.4.

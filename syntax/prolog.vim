@@ -145,6 +145,7 @@ highlight link prologBody         Statement
 highlight link prologDCGBody      Statement
 
 highlight link prologList         Type
+highlight link prologListDelimiters Type
 highlight link prologArity        Type
 highlight link prologDCGSpecials  Type
 highlight link prologTuple        Type

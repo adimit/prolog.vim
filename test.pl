@@ -37,10 +37,13 @@ head :- foo(C), foo(B),
 
 	% more comments
 	\+ foo(G).
- 
+
 /* a multiline
 * comment
 */
+
+% another multiline comment
+% consisting of a block of normal comments
 
 head :- Error(foo), _error(bar). /*predicates must start lower-case*/
 

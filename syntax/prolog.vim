@@ -74,8 +74,9 @@ syntax match   prologRelations    /=\.\.\|!\|=:=\|=\?<\|=@=\|=\\=\|>=\?\|@=\?<\|
 
 syntax region  prologCComment     fold start=/\/\*/ end=/\*\// contains=prologTODO,@Spell
 syntax match   prologComment      /%.*/ contains=prologTODO,@Spell
+syntax region  prologCommentFold  fold start=/^\zs\s*%/ skip=/^\s*%/ end=/^\ze\s*\([^%]\|$\)/ contains=prologComment
 syntax keyword prologTODO         FIXME TODO fixme todo Fixme FixMe Todo ToDo XXX xxx contained
-syntax cluster prologComments     contains=prologCComment,prologComment
+syntax cluster prologComments     contains=prologCComment,prologComment,prologCommentFold
 
 syntax region  prologBody         fold start=/\(:-\|?-\)/ end=/\./ 
 			\contains=@prologAll,prologPredicateWithArity

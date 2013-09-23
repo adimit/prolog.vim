@@ -87,6 +87,7 @@ syntax match   prologNumber       /\<\d\+\>/ contained
 syntax match   prologNumber       /\<\d\+\.\d\+\>/ contained
 syntax match   prologAtom         /\<\l\w*\>\ze\([^(]\|$\)/ contained
 syntax match   prologVariable     /\<\(_\|\u\)\w*\>/ contained
+syntax match   prologChar         /\<\0'\(\\\)\?.\>/ contained
 
 syntax match   prologHead         /\<\l\w*\>/ nextgroup=prologBody,prologDCGBody skipwhite
 syntax region  prologHeadWithArgs start=/\<\l\w*\>(/ end=/)/ nextgroup=prologBody,prologDCGBody contains=@prologAll
@@ -107,7 +108,7 @@ syntax match   prologListDelimiters /[,|]/ contained
 
 syntax cluster prologAll          contains=prologList,prologPredicate,prologTuple,@prologTerms,@prologComments,prologQuoted,@prologBuiltIn,prologRelations,prologArithmetic,prologDiffList
 syntax cluster prologTerms        contains=prologVariable,prologAtom,prologList,
-			\prologNumber,prologErrorTerm
+			\prologNumber,prologErrorTerm,prologChar
 
 syntax match   prologQuotedFormat /\~\(\d*[acd\~DeEgfGiknNpqrR@st\|+wW]\|`.t\)/ contained
 syntax region  prologQuoted       start=/'/ end=/'/ contains=prologQuotedFormat,@Spell
@@ -126,6 +127,7 @@ highlight link prologCComment     Comment
 highlight link prologTODO         TODO
 
 highlight link prologAtom         Constant
+highlight link prologChar         Constant
 highlight link prologVariable     Identifier
 highlight link prologNumber       Number
 
